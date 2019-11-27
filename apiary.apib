@@ -1,0 +1,84 @@
+FORMAT: 1A
+HOST: http://sibs.apiplatform.org/
+
+# Account Management - PSD2
+
+Provides management capabilities over bank accounts for a specific account
+
+## Account Details [/account/{account_ID}]
+
+### Get Account by ID [GET]
+
++ Parameters
+    + account_ID (number) - Account ID
+
++ Response 200 (application/json)
+
+        [
+            {
+                "accountID": "PT1234567890",
+                "accountNumber": "12345QWERTY",
+                "owners": [ "Luis Gomes", "Ana Gomes"],
+                "type" : "Savings",
+                "balance" : "EUR12345,21",
+                "IBAN": "PT50 0002 0123 1234 5678 9015 4"
+                
+            },
+            {
+                "accountID": "PT1234567890",
+                "accountNumber": "78901ABCDE",
+                "owners": [ "Luis Gomes"],
+                "type" : "Checking",
+                "balance" : "EUR3300,10",
+                "IBAN": "PT50 0002 0123 1234 5678 1341 9"
+                
+            }
+        ]
+
+
+## Private Accounts [/account/{account_ID}/private/{bankCode}]
+
+### Get private accounts at one bank[GET]
+
++ Parameters
+    + account_ID (number) - "PT1234567890"
+    + bankCode - "CGDI"
+
+
++ Response 200 (application/json)
+
+        [
+            {
+                "accountID": "PT1234567890",
+                "accountNumber": "78901ABCDE",
+                "owners": [ "Luis Gomes"],
+                "type" : "Checking",
+                "balance" : "EUR3300,10",
+                "IBAN": "PT50 0002 0123 1234 5678 1341 9"
+            }
+        ]
+        
+## Transactions [/account/transactions/{accountID}&{obp_sort_by}&{obp_sort_direction}&{obp_limit}&{obp_offset}&{obp_from_date}&{obp_to_date}]
+### Get Transactions for Account[GET]
+It includes possible custom headers for pagination ("opb_*")
++ Parameters
+    + accountID - "PT1234567890"
+    + obp_sort_by - "completed"
+    + obp_sort_direction - "DESC"
+    + obp_limit - 50
+    + obp_offset - 0
+    + obp_from_date - "2017-01-01T00:00:00.000Z"
+    + obp_to_date - "2017-05-01T00:00:00.000Z"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "accountID": "PT1234567890",
+                "accountNumber": "78901ABCDE",
+                "owners": [ "Luis Gomes"],
+                "type" : "Checking",
+                "balance" : "EUR3300,10",
+                "IBAN": "PT50 0002 0123 1234 5678 1341 9"
+            }
+        ]
