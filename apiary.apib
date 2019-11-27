@@ -207,6 +207,8 @@ Incidents is an API for the REST service exposed by Integration Cloud Service.  
 
 ### Update an incident [POST /incidents/{id}]
 
+To update an incident send incident id
+
 + parameters
     + id: 44501 (string, required)
     
@@ -217,3 +219,41 @@ Incidents is an API for the REST service exposed by Integration Cloud Service.  
             { "status": "Resolved" }
             
 + response 200 (application/json)
+
+### Create a New Incident [POST]
+
+To Create an Incident, post with the complete payload.
+
++ Request (application/json)
+
+        [
+            {
+                "incidentID": "112233",
+                "subject": "Door won't open",
+                "summary": "Customer reports that his card stoped opening doors",
+                "status": "Unresolved",
+                "tracking":""
+            }
+        ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /tickets/58a0d394e0577b0001bcc981
+
+    + Body
+
+            {
+            "_updated": "Sun, 12 Feb 2017 21:28:52 GMT",
+            "_links": {
+                "self": {
+                  "href": "tickets/58a0d394e0577b0001bcc981",
+                  "title": "Ticket"
+                }
+              },
+              "_created": "Sun, 12 Feb 2017 21:28:52 GMT",
+              "_status": "OK",
+              "_id": "58a0d394e0577b0001bcc981",
+              "_etag": "7a898301b641f1f28dbcf69a6c0dfadf292d6861"
+            }
