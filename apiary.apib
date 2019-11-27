@@ -1,84 +1,219 @@
 FORMAT: 1A
-HOST: http://sibs.apiplatform.org/
+HOST: http://polls.apiblueprint.org/
 
-# Account Management - PSD2
+# serviceTickets
 
-Provides management capabilities over bank accounts for a specific account
+Ticket Service is an API to manage Service Tickets.  This API fronts both a microservice and a status update REST service from Integration Cloud Service (ICS)
 
-## Account Details [/account/{account_ID}]
+## Tickets Collection [/tickets]
 
-### Get Account by ID [GET]
+### List All Tickets [GET]
+Issue a GET request to get a complete list of tickets.  You can include any of the fields as a filter
++ Request
 
-+ Parameters
-    + account_ID (number) - Account ID
+    + Headers
+    
+            Tenant-id: 31
+
 
 + Response 200 (application/json)
 
-        [
-            {
-                "accountID": "PT1234567890",
-                "accountNumber": "12345QWERTY",
-                "owners": [ "Luis Gomes", "Ana Gomes"],
-                "type" : "Savings",
-                "balance" : "EUR12345,21",
-                "IBAN": "PT50 0002 0123 1234 5678 9015 4"
-                
+        {
+              "_items": [
+                {
+                  "customer": "ACME Corp",
+                  "status": "Resolved",
+                  "product": "Widget",
+                 "_id": "589a3774ebee507f7268bcff",
+                 "_updated": "Tue, 07 Feb 2017 22:05:38 GMT",
+                 "summary": "Customer reports the widget stopped working",
+                  "_links": {
+                    "self": {
+                      "href": "tickets/589a3774ebee507f7268bcff",
+                      "title": "Ticket"
+                    }
+                  },
+                  "_created": "Thu, 01 Jan 1970 00:00:00 GMT",
+                  "ticketID": "45001",
+                  "_etag": "bd584d9a460eabdc979e428e1e0220923b0c5793",
+                  "subject": "Widget stopped working"
+                },
+                {
+                  "customer": "ACME Corp",
+                  "status": "Unresolved",
+                  "product": "Widget",
+                  "ticketID": "45002",
+                  "_updated": "Tue, 07 Feb 2017 21:44:21 GMT",
+                  "summary": "Customer reports the widget stopped working",
+                  "_links": {
+                    "self": {
+                      "href": "tickets/589a3fb534605c000176ef5f",
+                      "title": "Ticket"
+                    }
+                  },
+                  "_created": "Tue, 07 Feb 2017 21:44:21 GMT",
+                  "_id": "589a3fb534605c000176ef5f",
+                  "_etag": "cfe52a36fa7a1c738acc994f6e49a8f3f86ce4bf",
+                 "subject": "Widget stopped working"
+                },
+                {
+                  "customer": "ACME Corp",
+                  "status": "Unresolved",
+                  "product": "Widget",
+                  "ticketID": "45002",
+                 "_updated": "Tue, 07 Feb 2017 21:44:37 GMT",
+                  "summary": "Customer reports the widget stopped working",
+                 "_links": {
+                   "self": {
+                     "href": "tickets/589a3fc534605c000176ef60",
+                     "title": "Ticket"
+                   }
+                 },
+                  "_created": "Tue, 07 Feb 2017 21:44:37 GMT",
+                  "_id": "589a3fc534605c000176ef60",
+                  "_etag": "dbcf344b1bcaf9fc6781846ed944d147a875394c",
+                  "subject": "Widget stopped working"
+                },
+               {
+                 "status": "Resolved",
+                  "_updated": "Tue, 07 Feb 2017 21:57:59 GMT",
+                  "_links": {
+                    "self": {
+                     "href": "tickets/589a4133fbcb600001ac564b",
+                      "title": "Ticket"
+                   }
+                 },
+                 "_created": "Tue, 07 Feb 2017 21:50:43 GMT",
+                 "_id": "589a4133fbcb600001ac564b",
+                 "_etag": "a8706300f0a38c1d6aa871901475d2f7a9e29e1d"
+               },
+               {
+                "customer": "Smithers Corp",
+                "status": "Unresolved",
+                "product": "Idea tablet",
+                "ticketID": "45003",
+                "_updated": "Sun, 12 Feb 2017 21:28:52 GMT",
+                "summary": "When powering up unit, the display is blank",
+                "_links": {
+                 "self": {
+                    "href": "tickets/58a0d394e0577b0001bcc981",
+                    "title": "Ticket"
+                    }
+                 },
+                 "_created": "Sun, 12 Feb 2017 21:28:52 GMT",
+                 "_id": "58a0d394e0577b0001bcc981",
+                 "_etag": "7a898301b641f1f28dbcf69a6c0dfadf292d6861",
+                 "subject": "Display blank"
+               }
+             ],
+              "_links": {
+               "self": {
+                 "href": "tickets",
+                "title": "tickets"
+              },
+              "parent": {
+                "href": "/",
+                "title": "home"
+              }
             },
-            {
-                "accountID": "PT1234567890",
-                "accountNumber": "78901ABCDE",
-                "owners": [ "Luis Gomes"],
-                "type" : "Checking",
-                "balance" : "EUR3300,10",
-                "IBAN": "PT50 0002 0123 1234 5678 1341 9"
-                
+             "_meta": {
+               "max_results": 25,
+               "total": 5,
+              "page": 1
+             }
             }
-        ]
 
+### Create a New Ticket [POST]
 
-## Private Accounts [/account/{account_ID}/private/{bankCode}]
+To Create a ticket, post with the complete payload.
 
-### Get private accounts at one bank[GET]
-
-+ Parameters
-    + account_ID (number) - "PT1234567890"
-    + bankCode - "CGDI"
-
-
-+ Response 200 (application/json)
++ Request (application/json)
 
         [
             {
-                "accountID": "PT1234567890",
-                "accountNumber": "78901ABCDE",
-                "owners": [ "Luis Gomes"],
-                "type" : "Checking",
-                "balance" : "EUR3300,10",
-                "IBAN": "PT50 0002 0123 1234 5678 1341 9"
+                "ticketID": "45434",
+                "subject": "Keys are sticking",
+                "summary": "Customer reports that keys are sticking after spilling a sugar-laden soft-drink on it",
+                "customer": "Tech Experts",
+                "customerID": "46995",
+                "partner": "We-fix-em Computer Services",
+                "partnerID":"7309",
+                "product": "Lenovo Laptop Computer",
+                "status": "Unresolved",
+                "tracking":""
             }
         ]
-        
-## Transactions [/account/transactions/{accountID}&{obp_sort_by}&{obp_sort_direction}&{obp_limit}&{obp_offset}&{obp_from_date}&{obp_to_date}]
-### Get Transactions for Account[GET]
-It includes possible custom headers for pagination ("opb_*")
-+ Parameters
-    + accountID - "PT1234567890"
-    + obp_sort_by - "completed"
-    + obp_sort_direction - "DESC"
-    + obp_limit - 50
-    + obp_offset - 0
-    + obp_from_date - "2017-01-01T00:00:00.000Z"
-    + obp_to_date - "2017-05-01T00:00:00.000Z"
 
-+ Response 200 (application/json)
++ Response 201 (application/json)
 
-        [
+    + Headers
+
+            Location: /tickets/58a0d394e0577b0001bcc981
+
+    + Body
+
             {
-                "accountID": "PT1234567890",
-                "accountNumber": "78901ABCDE",
-                "owners": [ "Luis Gomes"],
-                "type" : "Checking",
-                "balance" : "EUR3300,10",
-                "IBAN": "PT50 0002 0123 1234 5678 1341 9"
+            "_updated": "Sun, 12 Feb 2017 21:28:52 GMT",
+            "_links": {
+                "self": {
+                  "href": "tickets/58a0d394e0577b0001bcc981",
+                  "title": "Ticket"
+                }
+              },
+              "_created": "Sun, 12 Feb 2017 21:28:52 GMT",
+              "_status": "OK",
+              "_id": "58a0d394e0577b0001bcc981",
+              "_etag": "7a898301b641f1f28dbcf69a6c0dfadf292d6861"
             }
-        ]
+
+### Update a Ticket [PATCH /tickets/{id}]
+
++ parameters
+    + id: 58a0d394e0577b0001bcc981 (string, required)
+    
++ request (application/json)
+
+    + Headers
+    
+            If-Match: 7a898301b641f1f28dbcf69a6c0dfadf292d6861
+
+    + Body
+    
+            { "status": "Resolved" }
+            
++ response 200 (application/json)
+
+        + Headers
+            ETag: 638bed8fb23acec55e36beafc1d0f2b2d86539ce
+
+    + Body
+    
+            {
+            "_updated": "Sun, 12 Feb 2017 22:48:24 GMT",
+             "_links": {
+               "self": {
+                 "href": "tickets/589a3774ebee507f7268bcff",
+                 "title": "Ticket"
+               }
+             },
+             "_created": "Thu, 01 Jan 1970 00:00:00 GMT",
+             "_status": "OK",
+             "_id": "589a3774ebee507f7268bcff",
+             "_etag": "638bed8fb23acec55e36beafc1d0f2b2d86539ce"
+            }
+
+## Incidents Collection [/incidents]
+Incidents is an API for the REST service exposed by Integration Cloud Service.  In the future, we will define PATCH /tickets to call the ICS REST service in the process of updating the status in the micro-service, but until that time, we will have a separate API for incidents.
+
+### Update an incident [POST /incidents/{id}]
+
++ parameters
+    + id: 44501 (string, required)
+    
++ request (application/json)
+
+    + Body
+    
+            { "status": "Resolved" }
+            
++ response 200 (application/json)
